@@ -7,6 +7,7 @@
     "dictionary":
     {
         "dictionaryFilename": "data/dictionary/words_alpha.txt",
+        "wordListFilename": "data/dictionary/words.txt",
         "wordVectorFilename": "data/dictionary/GoogleNews-vectors-negative300.bin",
         "maxHeaderSize": 50,
         "maxWordLength": 50,

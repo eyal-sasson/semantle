@@ -33,13 +33,12 @@ function getTarget(game, id)    //TODO: precache tomorrow's targets
         return null;
     }
 
-    let wordList;
-    while (game.targets.length <= id + config.game.precacheWords)
+    let wordList = dictionary.getWordList();
+    while (game.targets.length <= id + config.game.precacheWords && wordList.length > 0)
     {
         wordList = wordList || dictionary.getWordList();
 
-        let index = Math.floor(game.rng() * (wordList.length + 1));
-        let word = wordList[index];
+        let word = wordList.shift();
         game.targets.push(
         {
             word: word,

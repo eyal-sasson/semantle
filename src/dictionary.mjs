@@ -5,6 +5,7 @@ const cacheDirectory = 'data/similarity/';
 var wordVectorFile;
 var wordIndex;
 var vectorSize;
+var wordList;
 
 function loadDictionary(config)
 {
@@ -43,6 +44,7 @@ async function buildIndex(config)
 {
 	let dictionaryWords = loadDictionary(config);
 
+    wordList = fs.readFileSync(config.wordListFilename, 'utf8').split('\n').filter(Boolean);
 	wordVectorFile = await fs.promises.open(config.wordVectorFilename, 'r');
 	wordIndex = new Map();
 	vectorSize = -1;
@@ -243,12 +245,12 @@ async function getTopSimilarity(word, count = 2000)	//TODO: Optimize top-n calc:
 
 function getWordList()
 {
-	if (!wordIndex)
+	if (!wordList)
 	{
-		throw new Error('Word index is not initialized');
+		throw new Error('Word list is not initialized');
 	}
 
-	return [...wordIndex.keys()];
+    return wordList
 }
 
 export default
