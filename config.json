@@ -15,9 +15,9 @@
     },
     "game":
     {
-        "rngSalt": "your-string-here",
-        "dailyWords": 32,
-        "precacheWords": 5
+        "rngSalt": "semantle",
+        "dailyWords": 1,
+        "precacheWords": 1
     },
     "user":
     {

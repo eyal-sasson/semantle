@@ -30,11 +30,12 @@ function getTarget(game, id)    //TODO: precache tomorrow's targets
 {
     if (config.game.dailyWords > 0 && id >= config.game.dailyWords)
     {
+        console.log('Exceeded daily word limit');
         return null;
     }
 
     let wordList = dictionary.getWordList();
-    while (game.targets.length <= id + config.game.precacheWords && wordList.length > 0)
+    if (!game.targets.length && wordList.length > 0)
     {
         wordList = wordList || dictionary.getWordList();
 
@@ -111,7 +112,7 @@ async function getTargetInfo(userID)
         return target;
     }
 
-    let topWords = await getTarget(currentGame, user.wordID).nearby;
+    let topWords = await getTarget(currentGame, 0).nearby;
     target.similarity1000 = topWords[999].similarity;
     target.similarity100 = topWords[99].similarity;
     target.similarity10 = topWords[9].similarity;
