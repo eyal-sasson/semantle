@@ -145,7 +145,11 @@ async function initServer()
 
 			let response = await semantle.setUserName(userID, name);
 
-			res.writeHead(200, {'Content-Type': 'application/json'});
+            let header = {'Content-Type': 'application/json'};
+            if (response.status == 'OK' && response.id) {
+                header['Set-Cookie'] = `user_id=${response.id}; SameSite=Strict`;
+            }
+			res.writeHead(200, header);
 			res.end(JSON.stringify(response));
 		},
 		'/scores': async (req, res) =>

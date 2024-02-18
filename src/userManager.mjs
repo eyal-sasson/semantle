@@ -83,9 +83,16 @@ async function getAllUsers()
     return allUsers;
 }
 
+async function getUserByName(name)
+{
+    let allUsers = await getAllUsers();
+    return allUsers.find(user => user.name == name);
+}
+
 export default
 {
     getUser,
     getAllUsers,
-    createUser
+    createUser,
+    getUserByName,
 }

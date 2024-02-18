@@ -246,6 +246,9 @@ async function setName()
     }).then((res) =>
     {
         let response = JSON.parse(res);
+        if (response.message == 'refresh') {
+            location.reload();
+        }
         displayResponse(response);
     }).catch(handleError);
 }

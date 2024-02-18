@@ -230,7 +230,12 @@ async function advanceUser(userID)
 
 async function setUserName(userID, name)
 {
-    let user = await userManager.getUser(userID);
+    let user = await userManager.getUserByName(name);
+    if (user && user.id != userID) {
+        return {status: 'OK', message: 'refresh', id: user.id};
+    } else {
+        user = await userManager.getUser(userID);
+    }
     if (!user)
     {
         return {status: 'NOK', message: config.strings.unknownUser};
