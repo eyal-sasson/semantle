@@ -11,6 +11,7 @@ export default class User
 
     #state;
     #eventEmitter;
+    #startTime;
 
     get id() { return this.#state.id; }
     get name() { return this.#state.name; }
@@ -41,26 +42,30 @@ export default class User
         this.#state.gameHistory = [];
 
         this.#eventEmitter = new events.EventEmitter();
+        this.#startTime = new Date();
     }
 
     joinGame(gameID)
     {
         if (this.#state.guesses.length > 0) {
-            this.#state.gameHistory.push({ gameID: this.#state.gameID, score: this.pendingScore, guesses: this.#state.guesses });
+            this.#state.gameHistory.push({ gameID: this.#state.gameID, score: this.pendingScore, time: this.#state.time, guesses: this.#state.guesses });
         }
         this.#state.gameID = gameID;
         this.#state.wordID = 0;
         this.#state.score += this.pendingScore;
         this.#state.guesses = [];
+        this.#state.time = 0;
 
         this.#eventEmitter.emit('stateChange', this);
         this.#eventEmitter.emit('joinGame', this);
+
+        this.#startTime = new Date();
     }
 
     nextWord()
     {
         if (this.#state.guesses.length > 0) {
-            this.#state.gameHistory.push({ gameID: this.#state.gameID, wordID: this.#state.wordID, score: this.pendingScore, guesses: this.#state.guesses });
+            this.#state.gameHistory.push({ gameID: this.#state.gameID, time: this.#state.time, score: this.pendingScore, guesses: this.#state.guesses });
         }
         this.#state.wordID++;
         this.#state.score += this.pendingScore;
@@ -68,6 +73,8 @@ export default class User
 
         this.#eventEmitter.emit('stateChange', this);
         this.#eventEmitter.emit('joinGame', this);
+
+        this.#startTime = new Date();
     }
 
     makeGuess(guess)
@@ -79,6 +86,10 @@ export default class User
         
         this.#eventEmitter.emit('stateChange', this);
         this.#eventEmitter.emit('makeGuess', guess);
+    }
+
+    setTime() {
+        this.#state.time = (new Date() - this.#startTime) / 1000;
     }
 
     toJSON()

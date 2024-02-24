@@ -163,6 +163,7 @@ async function guess(userID, word)
         response.status = 'WIN';
     
         guess.score = {similarity: 1, rank: 0};
+        user.setTime();
     }
     else if (guess.score)
     {
