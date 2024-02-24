@@ -38,12 +38,15 @@ function getTarget(game, id)    //TODO: precache tomorrow's targets
     if (!game.targets.length && wordList.length > 0)
     {
         wordList = wordList || dictionary.getWordList();
+        let initialWordList = dictionary.getInitialWordList();
 
         let word = wordList.shift();
+        let initial = initialWordList.shift();
         game.targets.push(
         {
             word: word,
-            nearby: dictionary.getTopSimilarity(word)
+            nearby: dictionary.getTopSimilarity(word),
+            initial: initial,
         });
 
         console.log(`${game.id}:${game.targets.length} is ${word}`);
@@ -84,9 +87,13 @@ async function getGameInfo(userID)
     game.maxWords = config.game.dailyWords || '∞';
 
     let currentGame = getCurrentGame();
-    if (game.gameID == currentGame.id && game.wordID > 0)
+    if (game.gameID == currentGame.id)
     {
-        game.lastWord = await getTarget(currentGame, game.wordID - 1).word;
+        if (game.wordID > 0)
+            game.lastWord = await getTarget(currentGame, game.wordID - 1).word;
+
+        let wordToGuess = await getTarget(currentGame, game.wordID).initial;
+        await guess(userID, wordToGuess);
     }
 
     return game;

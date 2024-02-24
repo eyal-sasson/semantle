@@ -255,7 +255,8 @@ async function setName()
 
 async function guess()
 {
-    let word = document.getElementById('txtWord').value.trim();
+    const wordInput = document.getElementById('txtWord');
+    let word = wordInput.value.trim();
     
     await new Promise((resolve, reject) =>
     {
@@ -269,7 +270,7 @@ async function guess()
     {
         let response = JSON.parse(res);
         displayResponse(response);
-    }).catch(handleError);
+    }).catch(handleError).finally(() => wordInput.value = '');
 }
 
 async function next()

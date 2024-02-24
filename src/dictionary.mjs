@@ -6,6 +6,7 @@ var wordVectorFile;
 var wordIndex;
 var vectorSize;
 var wordList;
+var initialWords;
 
 function loadDictionary(config)
 {
@@ -45,6 +46,7 @@ async function buildIndex(config)
 	let dictionaryWords = loadDictionary(config);
 
     wordList = fs.readFileSync(config.wordListFilename, 'utf8').split('\n').filter(Boolean);
+    initialWords = fs.readFileSync(config.initialWordsFilename, 'utf8').split('\n').filter(Boolean);
 	wordVectorFile = await fs.promises.open(config.wordVectorFilename, 'r');
 	wordIndex = new Map();
 	vectorSize = -1;
@@ -253,10 +255,21 @@ function getWordList()
     return wordList
 }
 
+function getInitialWordList()
+{
+    if (!initialWords)
+    {
+        throw new Error('Initial word list is not initialized');
+    }
+
+    return initialWords;
+}
+
 export default
 {
 	buildIndex,
 	getSimilarity,
 	getTopSimilarity,
-	getWordList
+	getWordList,
+    getInitialWordList,
 };
