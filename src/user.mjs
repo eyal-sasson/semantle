@@ -38,12 +38,16 @@ export default class User
         this.#state.wordID = wordID;
         this.#state.guesses = [];
         this.#state.score = 0;
+        this.#state.gameHistory = [];
 
         this.#eventEmitter = new events.EventEmitter();
     }
 
     joinGame(gameID)
     {
+        if (this.#state.guesses.length > 0) {
+            this.#state.gameHistory.push({ gameID: this.#state.gameID, score: this.pendingScore, guesses: this.#state.guesses });
+        }
         this.#state.gameID = gameID;
         this.#state.wordID = 0;
         this.#state.score += this.pendingScore;
@@ -55,6 +59,9 @@ export default class User
 
     nextWord()
     {
+        if (this.#state.guesses.length > 0) {
+            this.#state.gameHistory.push({ gameID: this.#state.gameID, wordID: this.#state.wordID, score: this.pendingScore, guesses: this.#state.guesses });
+        }
         this.#state.wordID++;
         this.#state.score += this.pendingScore;
         this.#state.guesses = [];
