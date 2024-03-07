@@ -48,7 +48,7 @@ export default class User
     joinGame(gameID)
     {
         if (this.#state.guesses.length > 0) {
-            this.#state.gameHistory.push({ gameID: this.#state.gameID, score: this.pendingScore, time: this.#state.time, guesses: this.#state.guesses });
+            this.#state.gameHistory.push({ gameID: this.#state.gameID, time: this.#state.time, guesses: this.#state.guesses });
         }
         this.#state.gameID = gameID;
         this.#state.wordID = 0;
@@ -65,7 +65,7 @@ export default class User
     nextWord()
     {
         if (this.#state.guesses.length > 0) {
-            this.#state.gameHistory.push({ gameID: this.#state.gameID, time: this.#state.time, score: this.pendingScore, guesses: this.#state.guesses });
+            this.#state.gameHistory.push({ gameID: this.#state.gameID, time: this.#state.time, guesses: this.#state.guesses });
         }
         this.#state.wordID++;
         this.#state.score += this.pendingScore;
